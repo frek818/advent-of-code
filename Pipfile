@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 advent-of-code-data = "*"
 pytest = "*"
+black = "*"
 
 [dev-packages]
 autopep8 = "*"

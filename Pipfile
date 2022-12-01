@@ -5,8 +5,10 @@ name = "pypi"
 
 [packages]
 advent-of-code-data = "*"
+pytest = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,27 +1,19 @@
 '''Day 1: Calorie Counting'''
 from aocd.models import Puzzle
 
+YEAR = 2022
+DAY = 1
+
 def parse_elves_calories(input_data):
     'parse elves calories'
-    lines = [l.strip() for l in input_data.split("\n")]
-
-    elves = []
-    elf = []
-    for line in lines:
-        if line.strip() != '':
-            elf.append(int(line))
-            continue
-        if len(elf) == 0:
-            elves.append(elf)
-            elf = []
-    if len(elf) != 0:
-        elves.append(elf)
-    return elves
+    return [[int(cal) for cal in group.split('\n') if cal]
+        for group in input_data.split("\n\n")
+    ]
 
 def solution_1(input_data):
     '''Max calories of elves'''
     elves = parse_elves_calories(input_data)
-    return max(sum(e_cals) for e_cals in elves)
+    return max([sum(e_cals) for e_cals in elves])
 
 def solution_2(input_data):
     '''Max calories carried by top n elves'''
@@ -31,7 +23,7 @@ def solution_2(input_data):
     return sum(calories_sorted_desc[0:top_n])
 
 if __name__ == '__main__':
-    puzzle = Puzzle(year=2022, day=1)
+    puzzle = Puzzle(year=YEAR, day=DAY)
     print(solution_1(puzzle.input_data))
     print(solution_2(puzzle.input_data))
     

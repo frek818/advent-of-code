@@ -20,7 +20,7 @@ def input_data():
 9000
 
 10000
-""".rstrip()
+""".strip()
 
 def test_parse_elves_calories(input_data):
     assert 5 == len(parse_elves_calories(input_data))

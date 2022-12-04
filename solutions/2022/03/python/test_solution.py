@@ -13,7 +13,7 @@ PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw
-""".rstrip()
+""".strip()
 
 
 @pytest.mark.parametrize(('item', 'expected_point_value'), (

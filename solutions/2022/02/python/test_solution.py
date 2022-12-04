@@ -10,7 +10,7 @@ def input_data():
 A Y
 B X
 C Z
-""".rstrip()
+""".strip()
 
 
 def test_solution_1(input_data):

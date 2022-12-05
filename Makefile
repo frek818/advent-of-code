@@ -12,30 +12,24 @@ variables:
 $(SOLUTION_DIR): variables
 	mkdir -p $@
 
-$(PYTHON_DIR): variables
-	mkdir -p $@
-
-$(GOLAND_DIR): variables
-	mkdir -p $@
-
 .PHONY: day
 day: variables $(SOLUTION_DIR)
 	echo "Day created"
 
 .PHONY: python
 python: variables $(SOLUTION_DIR)
-	[ ! -d $(SOLUTION_DIR)/python ]
-	cp -a template/python/* $(PYTHON_DIR)/
+	[ ! -d $(PYTHON_DIR) ]
+	cp -a template/python $(SOLUTION_DIR)/
 
 .PHONY: golang
 golang: variables $(SOLUTION_DIR)
-	[ ! -d $(SOLUTION_DIR)/golang ]
-	cp -a template/golang/* $(GOLANG_DIR)/
+	[ ! -d $(GOLANG_DIR) ]
+	cp -a template/golang $(SOLUTION_DIR)/
 
 .PHONY: pytest
-pytest: variables $(PYTHON_DIR)
+pytest: variables python
 	@cd $(PYTHON_DIR) && python -mpytest
 
 .PHONY: pyanswer
-pyanswer: variables $(PYTHON_DIR)
+pyanswer: variables pytest
 	@cd $(PYTHON_DIR) && python solution.py

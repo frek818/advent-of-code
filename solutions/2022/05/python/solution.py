@@ -77,7 +77,7 @@ class CrateStackerv9001(CrateStacker):
 
 
 def solution_1(input_data):
-    stacks = CrateStacker.from_input(input_data.split("\n\n")[0])
+    stacks = CrateStacker.from_input(input_data)
     procedures = parse_procedures(input_data)
     for procedure in procedures:
         stacks.move(procedure)
@@ -85,7 +85,7 @@ def solution_1(input_data):
 
 
 def solution_2(input_data):
-    stacks = CrateStackerv9001.from_input(input_data.split("\n\n")[0])
+    stacks = CrateStackerv9001.from_input(input_data)
     procedures = parse_procedures(input_data)
     for procedure in procedures:
         stacks.move(procedure)

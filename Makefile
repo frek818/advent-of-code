@@ -2,11 +2,25 @@ DAY:=
 YEAR:=
 SOLUTION_DIR:=solutions/$(YEAR)/$(DAY)
 
-.PHONY: day
-day:
+.PHONY: variables
+variables:
 	[ -n "$(DAY)" ] # Make sure DAY is set
 	[ -n "$(YEAR)" ] # Make sure YEAR is set
-	[ ! -d $(SOLUTION_DIR) ] # Make sure the solution doesn't exist
+
+solutions/$(YEAR)/$(DAY):
 	mkdir -p $(SOLUTION_DIR)
+
+.PHONY: day
+day: variables $(SOLUTION_DIR)
+	echo "Day created"
+
+.PHONY: python
+python: variables $(SOLUTION_DIR)
+	[ ! -d $(SOLUTION_DIR)/python ]
 	cp -a template/python $(SOLUTION_DIR)/python
+
+.PHONY: golang
+golang: variables $(SOLUTION_DIR)
+	[ ! -d $(SOLUTION_DIR)/golang ]
+	cp -a template/golang $(SOLUTION_DIR)/golang
 

@@ -20,10 +20,6 @@ class Procedure:
         self.count = data[0]
         self.source = data[1] - 1
         self.destination = data[2] - 1
-        self._input = line
-
-    def __str__(self):
-        return self._input
 
 
 def parse_procedures(input_data):

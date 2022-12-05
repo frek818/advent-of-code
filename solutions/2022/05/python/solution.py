@@ -65,11 +65,11 @@ class CrateStackerv9001(CrateStacker):
     def move(self, move: Procedure):
         source = self.stacks[move.source]
         destination = self.stacks[move.destination]
-        stack = Stack()
+        buffer = Stack()
         for _ in range(move.count):
-            stack.put(source.get())
+            buffer.put(source.get())
         for _ in range(move.count):
-            destination.put(stack.get_nowait())
+            destination.put(buffer.get_nowait())
 
 
 def solution_1(input_data):

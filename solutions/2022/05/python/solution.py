@@ -51,13 +51,13 @@ class CrateStacker:
         lines = [x for x in input_data.split("\n\n")[0].split("\n")]
         stack_count = len([x for x in lines[-1].split(" ") if x])
         stacks = [Stack() for _ in range(stack_count)]
-        levels = [lines[level_idx] for level_idx in range(len(lines) - 2, -1, -1)]
+        levels = [lines[stack_idx] for stack_idx in range(len(lines) - 2, -1, -1)]
         for level in levels:
-            for level_idx, item_idx in enumerate(range(1, stack_count * 4, 4)):
+            for stack_idx, item_idx in enumerate(range(1, stack_count * 4, 4)):
                 column_value = level[item_idx]
                 if column_value == " ":
                     continue
-                stacks[level_idx].put(column_value)
+                stacks[stack_idx].put(column_value)
         return cls(stacks)
 
 

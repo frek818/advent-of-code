@@ -1,4 +1,4 @@
-'''Unit Tests'''
+"""Unit Tests"""
 import pytest
 
 from .solution import solution_1, solution_2, item_value
@@ -16,12 +16,15 @@ CrZsJsPPZsGzwwsLwLmpwMDw
 """.strip()
 
 
-@pytest.mark.parametrize(('item', 'expected_point_value'), (
-    ('a', 1),
-    ('z', 26),
-    ('A', 27),
-    ('Z', 52),
-))
+@pytest.mark.parametrize(
+    ("item", "expected_point_value"),
+    (
+        ("a", 1),
+        ("z", 26),
+        ("A", 27),
+        ("Z", 52),
+    ),
+)
 def test_item_value(item, expected_point_value):
     assert expected_point_value == item_value(item)
 

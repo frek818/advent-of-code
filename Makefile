@@ -7,7 +7,7 @@ variables:
 	[ -n "$(DAY)" ] # Make sure DAY is set
 	[ -n "$(YEAR)" ] # Make sure YEAR is set
 
-solutions/$(YEAR)/$(DAY):
+$(SOLUTION_DIR):
 	mkdir -p $(SOLUTION_DIR)
 
 .PHONY: day

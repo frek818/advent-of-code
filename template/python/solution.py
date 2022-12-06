@@ -1,19 +1,20 @@
 from aocd.models import Puzzle
 
-DAY = None 
-YEAR = None
-assert DAY and YEAR, "Day and year must be set"
 
 def solution_1(input_data):
     'part 1'
     return 1
 
+
 def solution_2(input_data):
     'part 2'
     return 1
 
+
+year, day = None, None
+assert year and day, "year and day must be set"
+
 if __name__ == '__main__':
-    puzzle = Puzzle(year=YEAR, day=DAY)
+    puzzle = Puzzle(year=year, day=day)
     print(solution_1(puzzle.input_data))
     print(solution_2(puzzle.input_data))
-    

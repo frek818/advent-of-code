@@ -1,9 +1,5 @@
 from aocd.models import Puzzle
 
-DAY = 6
-YEAR = 2022
-assert DAY and YEAR, "Day and year must be set"
-
 
 def marker_finder(input_data, distinct):
     answer = None
@@ -23,7 +19,10 @@ def solution_2(input_data):
     return marker_finder(input_data, 14)
 
 
+year, day = None, None
+assert year and day, "year and day must be set"
+
 if __name__ == '__main__':
-    puzzle = Puzzle(year=YEAR, day=DAY)
+    puzzle = Puzzle(year=year, day=DAY)
     print(solution_1(puzzle.input_data))
     print(solution_2(puzzle.input_data))

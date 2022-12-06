@@ -2,6 +2,7 @@ from aocd.models import Puzzle
 
 DAY = None 
 YEAR = None
+assert DAY and YEAR, "Day and year must be set"
 
 def solution_1(input_data):
     return 1

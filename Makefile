@@ -12,24 +12,28 @@ variables:
 $(SOLUTION_DIR): variables
 	mkdir -p $@
 
+$(SOLUTION_DIR)/problem.md:
+	touch $@
+
 .PHONY: day
-day: variables $(SOLUTION_DIR)
+day: variables $(SOLUTION_DIR) $(SOLUTION_DIR)/problem.md
 	echo "Day created"
 
 .PHONY: python
-python: variables $(SOLUTION_DIR)
+python: variables day
 	[ ! -d $(PYTHON_DIR) ]
 	cp -a template/python $(SOLUTION_DIR)/
 
 .PHONY: golang
-golang: variables $(SOLUTION_DIR)
+golang: variables day
 	[ ! -d $(GOLANG_DIR) ]
 	cp -a template/golang $(SOLUTION_DIR)/
 
 .PHONY: pytest
-pytest: variables python
+pytest: variables $(PYTHON_DIR)
 	@cd $(PYTHON_DIR) && python -mpytest
 
 .PHONY: pyanswer
 pyanswer: variables pytest
 	@cd $(PYTHON_DIR) && python solution.py
+

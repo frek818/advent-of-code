@@ -5,9 +5,11 @@ YEAR = None
 assert DAY and YEAR, "Day and year must be set"
 
 def solution_1(input_data):
+    'part 1'
     return 1
 
 def solution_2(input_data):
+    'part 2'
     return 1
 
 if __name__ == '__main__':

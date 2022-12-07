@@ -39,16 +39,20 @@ class Directory(Node):
     def add_child(self, child: Union["Directory", File]):
         self._children.append(child)
 
-    def size(self):
+    def size(self) -> int:
         return sum([child.size() for child in self._children])
 
-    def get_children_recursively(self):
-        stuff = []
+    @property
+    def children(self):
+        return self._children
+
+    def get_children_recursively(self) -> List[Union["Directory", File]]:
+        items = []
         for child in self._children:
-            stuff.append(child)
+            items.append(child)
             if isinstance(child, Directory):
-                stuff.extend(child.get_children_recursively())
-        return stuff
+                items.extend(child.get_children_recursively())
+        return items
 
 
 class FileSystem:
@@ -74,18 +78,18 @@ class FileSystem:
             assert index_key in self._index, f"Path doesn't exist: {index_key}"
             self._current_directory = self._index.get(index_key)
 
-    def _generate_index_key(self, new_path):
+    def _generate_index_key(self, new_path) -> str:
         if self.current_path_string() == "":
             index_key = new_path
         else:
             index_key = self.current_path_string() + "/" + new_path
         return index_key
 
-    def ls(self, path="/", recursive=False):
+    def ls(self, path="/", recursive=False) -> List[Union["Directory", File]]:
         item = self._index.get(path)
-        return item.get_children_recursively() if recursive else item._children
+        return item.get_children_recursively() if recursive else item.children
 
-    def current_path_string(self):
+    def current_path_string(self) -> str:
         return get_full_path_string(self._current_directory)
 
     def make_dir(self, dirname):
@@ -102,7 +106,7 @@ class FileSystem:
         self._current_directory.add_child(new_file)
         self._index[index_key] = new_file
 
-    def size(self):
+    def size(self) -> int:
         return self._root.size()
 
 

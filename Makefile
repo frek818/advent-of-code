@@ -20,11 +20,11 @@ ifneq "$(strip $(shell echo $(YEAR)|wc -c))" "5"
 endif
 
 .PHONY: pytest
-pytest: | $(PYTHON_PATH)
+pytest: check-env | $(PYTHON_PATH)
 	cd $(PYTHON_PATH) && python -mpytest
 
 .PHONY: pyanswer
-pyanswer: check-env | $(PYTHON_PATH)
+pyanswer: check-env pytest | $(PYTHON_PATH)
 	cd $(PYTHON_PATH) && python solution.py
 
 $(PYTHON_PATH): | $(SOLUTION_PATH)

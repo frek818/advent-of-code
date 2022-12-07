@@ -34,6 +34,7 @@ $(GOLANG_PATH): | $(SOLUTION_PATH)
 	cp -a template/golang $(SOLUTION_PATH)/
 
 $(SOLUTION_PATH): | check-env
+	git checkout -b feature/$(YEAR)/$(DAY)
 	mkdir -p $(SOLUTION_PATH)
 	touch $(SOLUTION_PATH)/problem.md
 

@@ -35,12 +35,16 @@ class Directory(Node):
                  children: List[Union["Directory", File]] = None):
         self._children = [] if children is None else children
         super().__init__(name=name, parent=parent)
+        self._cached_size = None
+        self._cached_current_path = None
 
     def add_child(self, child: Union["Directory", File]):
         self._children.append(child)
 
     def size(self) -> int:
-        return sum([child.size() for child in self._children])
+        if self._cached_size is None:
+            self._cached_size = sum([child.size() for child in self._children])
+        return self._cached_size
 
     @property
     def children(self):
@@ -75,7 +79,6 @@ class FileSystem:
             self._current_directory = self._current_directory.parent()
         else:
             index_key = self._generate_index_key(new_path)
-            assert index_key in self._index, f"Path doesn't exist: {index_key}"
             self._current_directory = self._index.get(index_key)
 
     def _generate_index_key(self, new_path) -> str:
@@ -90,18 +93,18 @@ class FileSystem:
         return item.get_children_recursively() if recursive else item.children
 
     def current_path_string(self) -> str:
-        return get_full_path_string(self._current_directory)
+        if not self._current_directory._cached_current_path:
+            self._current_directory._cached_current_path = get_full_path_string(self._current_directory)
+        return self._current_directory._cached_current_path
 
     def make_dir(self, dirname):
         index_key = self._generate_index_key(dirname)
-        assert index_key not in self._index, 'Path already exists'
         new_dir = Directory(name=dirname, parent=self._current_directory)
         self._current_directory.add_child(new_dir)
         self._index[index_key] = new_dir
 
     def make_file(self, name: str, size: int):
         index_key = self._generate_index_key(name)
-        assert index_key not in self._index, 'Path already exists'
         new_file = File(name=name, size=size, parent=self._current_directory)
         self._current_directory.add_child(new_file)
         self._index[index_key] = new_file
@@ -132,30 +135,27 @@ def create_filesystem(input_data):
         elif line.startswith("dir "):
             filesystem.make_dir(line.split('dir ')[1])
         elif len(line.split(' ')) == 2:
-            size = line.split(' ')[0]
-            filename = line.split(' ')[1]
-            filesystem.make_file(name=filename, size=int(size))
+            size_name = line.split(' ')
+            filesystem.make_file(name=size_name[1], size=int(size_name[0]))
     return filesystem
 
-
+FILESYSTEM = None
+DIRECTORY_SIZES = None
 def solution_1(input_data: str):
     "part 1"
-    filesystem = create_filesystem(input_data)
-    return sum([d.size() for d in filesystem.ls("/", recursive=True)
-               if isinstance(d, Directory) and d.size() < 100000])
-
+    global FILESYSTEM
+    global DIRECTORY_SIZES
+    FILESYSTEM = create_filesystem(input_data)
+    DIRECTORY_SIZES = [d.size() for d in FILESYSTEM.ls("/", recursive=True) if isinstance(d, Directory)]
+    return sum([s for s in DIRECTORY_SIZES if s < 100000])
 
 def solution_2(input_data: str):
     "part 2"
     total_disk_size = 70000000
     target_free_space = 30000000
-    filesystem = create_filesystem(input_data)
-    free_space = total_disk_size - filesystem.size()
+    free_space = total_disk_size - FILESYSTEM.size()
     minimum_delete = target_free_space - free_space
-    return min([d.size()
-                for d in filesystem.ls("/", recursive=True)
-                if isinstance(d, Directory) and d.size() >= minimum_delete
-                ])
+    return min([s for s in DIRECTORY_SIZES if s >= minimum_delete])
 
 
 year, day = 2022, 7
@@ -163,5 +163,6 @@ assert year and day, "year and day must be set"
 
 if __name__ == '__main__':
     puzzle = Puzzle(year=year, day=day)
-    print(solution_1(puzzle.input_data))
-    print(solution_2(puzzle.input_data))
+    for _ in range(500):
+        print(solution_1(puzzle.input_data))
+        print(solution_2(puzzle.input_data))

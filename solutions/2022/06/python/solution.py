@@ -1,7 +1,11 @@
 from aocd.models import Puzzle
 
 
-def marker_finder(input_data, distinct):
+def marker_finder(input_data: str, distinct: int):
+    """
+    Returns the position of the first n length substring
+    with distinct characters
+    """
     answer = None
     for start_idx in range(len(input_data) - distinct + 1):
         uniq_characters = len(set(input_data[start_idx:start_idx + distinct]))
@@ -11,11 +15,13 @@ def marker_finder(input_data, distinct):
     return answer
 
 
-def solution_1(input_data):
+def solution_1(input_data: str):
+    "solution 1"
     return marker_finder(input_data, 4)
 
 
-def solution_2(input_data):
+def solution_2(input_data: str):
+    "solution 2"
     return marker_finder(input_data, 14)
 
 

@@ -1,39 +1,39 @@
-DAY:=
-YEAR:=
-SOLUTION_DIR:=solutions/$(YEAR)/$(DAY)
-GOLANG_DIR:=$(SOLUTION_DIR)/golang
-PYTHON_DIR:=$(SOLUTION_DIR)/python
+DAY =
+YEAR =
+SOLUTION_PATH:=solutions/$(YEAR)/$(DAY)
+GOLANG_PATH:=$(SOLUTION_PATH)/golang
+PYTHON_PATH:=$(SOLUTION_PATH)/python
 
-.PHONY: variables
-variables:
-	[ -n "$(DAY)" ] # Make sure DAY is set
-	[ -n "$(YEAR)" ] # Make sure YEAR is set
-
-$(SOLUTION_DIR): variables
-	mkdir -p $@
-
-$(SOLUTION_DIR)/problem.md:
-	touch $@
-
-.PHONY: day
-day: variables $(SOLUTION_DIR) $(SOLUTION_DIR)/problem.md
-	echo "Day created"
-
-.PHONY: python
-python: variables day
-	[ ! -d $(PYTHON_DIR) ]
-	cp -a template/python $(SOLUTION_DIR)/
-
-.PHONY: golang
-golang: variables day
-	[ ! -d $(GOLANG_DIR) ]
-	cp -a template/golang $(SOLUTION_DIR)/
+.PHONY: check-env
+check-env:
+ifndef DAY
+	$(error DAY is undefined)
+endif
+ifneq "$(strip $(shell echo $(DAY)|wc -c))" "3"
+	$(error DAY must be a two digit string)
+endif
+ifndef YEAR
+	$(error YEAR is undefined)
+endif
+ifneq "$(strip $(shell echo $(YEAR)|wc -c))" "5"
+	$(error YEAR must be a four digit string)
+endif
 
 .PHONY: pytest
-pytest: variables $(PYTHON_DIR)
-	@cd $(PYTHON_DIR) && python -mpytest
+pytest: | $(PYTHON_PATH)
+	cd $(PYTHON_PATH) && python -mpytest
 
 .PHONY: pyanswer
-pyanswer: variables pytest
-	@cd $(PYTHON_DIR) && python solution.py
+pyanswer: check-env | $(PYTHON_PATH)
+	cd $(PYTHON_PATH) && python solution.py
+
+$(PYTHON_PATH): | $(SOLUTION_PATH)
+	cp -a template/python $(SOLUTION_PATH)/
+
+$(GOLANG_PATH): | $(SOLUTION_PATH)
+	cp -a template/golang $(SOLUTION_PATH)/
+
+$(SOLUTION_PATH): | check-env
+	mkdir -p $(SOLUTION_PATH)
+	touch $(SOLUTION_PATH)/problem.md
 

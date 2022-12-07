@@ -1,14 +1,17 @@
+"""
+# REPLACE WITH TITLE
+"""
 from aocd.models import Puzzle
 
 
-def solution_1(input_data):
-    'part 1'
-    return 1
+def solution_1(input_data: str):
+    "part 1"
+    return 0
 
 
-def solution_2(input_data):
-    'part 2'
-    return 1
+def solution_2(input_data: str):
+    "part 2"
+    return 0
 
 
 year, day = None, None

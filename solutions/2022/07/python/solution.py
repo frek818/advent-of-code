@@ -85,9 +85,6 @@ class FileSystem:
         item = self._index.get(path)
         return item.get_children_recursively() if recursive else item._children
 
-    def children_recursively(self):
-        return self._root.get_children_recursively()
-
     def current_path_string(self):
         return get_full_path_string(self._current_directory)
 

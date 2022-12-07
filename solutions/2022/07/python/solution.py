@@ -151,12 +151,10 @@ def solution_2(input_data: str):
     filesystem = create_filesystem(input_data)
     free_space = total_disk_size - filesystem.size()
     minimum_delete = target_free_space - free_space
-    # options = min([d.size()
     return min([d.size()
                 for d in filesystem.ls("/", recursive=True)
                 if isinstance(d, Directory) and d.size() >= minimum_delete
                 ])
-    # return options.size()
 
 
 year, day = 2022, 7

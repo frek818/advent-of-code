@@ -38,12 +38,12 @@ def parse_moves(input_data: str):
             in [line.split(' ') for line in input_data.splitlines() if line]]
 
 
-def control_a(knot: Knot, direction):
+def control_head(knot: Knot, direction):
     knot.move(direction)
     return knot.position()
 
 
-def control_b(knot: Knot, following_position):
+def control_tail(knot: Knot, following_position):
     bx, by = knot.position()
     ax, ay = following_position
 
@@ -82,9 +82,9 @@ def control_b(knot: Knot, following_position):
 
 
 def update_positions(knots: List[Knot], first_move):
-    control_a(knots[0], first_move)
+    control_head(knots[0], first_move)
     for tail_index in range(1, len(knots)):
-        control_b(knots[tail_index], knots[tail_index - 1].position())
+        control_tail(knots[tail_index], knots[tail_index - 1].position())
 
 
 def get_grid_boundaries(positions):

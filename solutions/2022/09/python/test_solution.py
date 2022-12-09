@@ -1,7 +1,7 @@
 """Unit Tests"""
 import pytest
 
-from .solution import solution_1, solution_2, control_b, Knot
+from .solution import solution_1, solution_2, control_tail, Knot
 
 
 @pytest.fixture
@@ -42,7 +42,7 @@ def test_control_b():
     for move, steps in thing_a_moves:
         for _ in range(steps):
             thing_a.move(move)
-            control_b(thing_b, thing_a.position())
+            control_tail(thing_b, thing_a.position())
             b_positions.append(thing_b.position())
 
     assert expected_b_positions == b_positions

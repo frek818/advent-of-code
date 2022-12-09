@@ -33,9 +33,12 @@ class Knot:
 
 
 def parse_moves(input_data: str):
-    return [(direction, int(steps))
-            for direction, steps
-            in [line.split(' ') for line in input_data.splitlines() if line]]
+    return [
+        (direction, int(steps))
+        for direction, steps in [
+            line.split(" ") for line in input_data.splitlines() if line
+        ]
+    ]
 
 
 def control_head(knot: Knot, direction):

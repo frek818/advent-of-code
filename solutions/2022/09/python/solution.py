@@ -84,8 +84,8 @@ def control_tail(knot: Knot, following_position):
     return knot.position()
 
 
-def update_positions(knots: List[Knot], first_move):
-    control_head(knots[0], first_move)
+def update_positions(knots: List[Knot], head_move):
+    control_head(knots[0], head_move)
     for tail_index in range(1, len(knots)):
         control_tail(knots[tail_index], knots[tail_index - 1].position())
 

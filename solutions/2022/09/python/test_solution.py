@@ -1,7 +1,7 @@
 '''Unit Tests'''
 import pytest
 
-from .solution import solution_1, solution_2, control_b, Thing
+from .solution import solution_1, solution_2, control_b, Knot
 
 @pytest.fixture
 def input_data():
@@ -17,8 +17,8 @@ R 2
 """.lstrip("\n")
 
 def test_control_b():
-    thing_a = Thing(0,0,"1")
-    thing_b = Thing(0,0,"2")
+    thing_a = Knot(0,0,"1")
+    thing_b = Knot(0,0,"2")
     thing_a_moves = [
         ("R", 4),
         ("U", 4),

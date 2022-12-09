@@ -5,7 +5,7 @@ from typing import List
 from aocd.models import Puzzle
 
 
-class Thing:
+class Knot:
     def __init__(self, x, y, id: int):
         self._x = x
         self._y = y
@@ -32,16 +32,17 @@ class Thing:
         return (self._x, self._y)
 
 
-def parse_command(direction: str, step: str):
-    return direction, int(step)
+def parse_command(line: str):
+    direction, steps = line.split(" ")
+    return direction, int(steps)
 
 
-def control_a(thing: Thing, direction):
+def control_a(thing: Knot, direction):
     thing.move(direction)
     return thing.position()
 
 
-def control_b(thing: Thing, following_position):
+def control_b(thing: Knot, following_position):
     bx, by = thing.position()
     ax, ay = following_position
 
@@ -79,22 +80,10 @@ def control_b(thing: Thing, following_position):
     return thing.position()
 
 
-def tick(thing_a, thing_b, a_command):
-    a_position = control_a(thing_a, a_command)
-    control_b(thing_b, a_position)
-
-
-def tick_many(things: List[Thing], first_move):
+def tick(things: List[Knot], first_move):
     control_a(things[0], first_move)
-    control_b(things[1], things[0].position())
-    control_b(things[2], things[1].position())
-    control_b(things[3], things[2].position())
-    control_b(things[4], things[3].position())
-    control_b(things[5], things[4].position())
-    control_b(things[6], things[5].position())
-    control_b(things[7], things[6].position())
-    control_b(things[8], things[7].position())
-    control_b(things[9], things[8].position())
+    for tail_index in range(1, len(things)):
+        control_b(things[tail_index], things[tail_index - 1].position())
 
 
 def get_grid_boundaries(positions):
@@ -109,46 +98,42 @@ def get_grid_boundaries(positions):
     return vertical_range, horizontal_range
 
 
-def print_positions(things: List[Thing]):
-    positions = [thing.position() for thing in things]
-    vertical_range, horizontal_range = get_grid_boundaries(positions)
+def print_positions(things: List[Knot], visited_locations: List[Knot]):
+    vertical_range, horizontal_range = get_grid_boundaries(visited_locations)
     position_to_thing_map = {thing.position(): thing for thing in things}
     for y in vertical_range:
         for x in horizontal_range:
             thing = position_to_thing_map.get((x, y))
             print("." if thing is None else thing.id, end="")
         print()
+    print()
+
+
+def tail_visited_locations(things, moves, print_board=False):
+    visited_locations = []
+    for direction, steps in moves:
+        for _ in range(steps):
+            tick(things, direction)
+            visited_locations.append(things[-1].position())
+        if print_board:
+            print_positions(things, visited_locations)
+    return visited_locations
 
 
 def solution_1(input_data: str):
     "part 1"
-    thing_a = Thing(0, 0, "1")
-    thing_b = Thing(0, 0, "2")
-    unique_locations = []
-
-    for line in input_data.split("\n"):
-        if not line:
-            continue
-        direction, steps = parse_command(*line.split(" "))
-        for _ in range(steps):
-            tick(thing_a, thing_b, direction)
-            unique_locations.append(thing_b.position())
-    return len(set(unique_locations))
+    things = [Knot(0, 0, id) for id in range(2)]
+    moves = [parse_command(line) for line in input_data.splitlines() if line]
+    visited = tail_visited_locations(things, moves)
+    return len(set(visited))
 
 
 def solution_2(input_data: str):
     "part 2"
-    things = [Thing(0, 0, id) for id in range(10)]
-    locations = []
-    for line in input_data.split("\n"):
-        if not line:
-            continue
-        direction, steps = parse_command(*line.split(" "))
-        for _ in range(steps):
-            tick_many(things, direction)
-            locations.append(things[9].position())
-        print_positions(things)
-    return len(set(locations))
+    things = [Knot(0, 0, id) for id in range(10)]
+    moves = [parse_command(line) for line in input_data.splitlines() if line]
+    visited = tail_visited_locations(things, moves)
+    return len(set(visited))
 
 
 year, day = 2022, 9

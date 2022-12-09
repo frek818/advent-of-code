@@ -90,29 +90,6 @@ def update_positions(knots: List[Knot], head_move):
         control_tail(knots[tail_index], knots[tail_index - 1].position())
 
 
-def get_grid_boundaries(positions):
-    xs = [a[0] for a in positions]
-    ys = [a[1] for a in positions]
-    left_bound = min(xs)
-    right_bound = max(xs)
-    lower_bound = min(ys)
-    upper_bound = max(ys)
-    vertical_range = range(upper_bound, lower_bound - 1, -1)
-    horizontal_range = range(left_bound, right_bound + 1)
-    return vertical_range, horizontal_range
-
-
-def print_positions(knots: List[Knot], visited_locations: List[Knot]):
-    vertical_range, horizontal_range = get_grid_boundaries(visited_locations)
-    position_to_thing_map = {thing.position(): thing for thing in knots}
-    for y in vertical_range:
-        for x in horizontal_range:
-            thing = position_to_thing_map.get((x, y))
-            print("." if thing is None else thing.id, end="")
-        print()
-    print()
-
-
 def tail_visited_locations(
     knots: List[Knot], moves: List[Tuple[str, int]], print_board=False
 ):
@@ -121,8 +98,6 @@ def tail_visited_locations(
         for _ in range(steps):
             update_positions(knots, direction)
             visited_locations.add(knots[-1].position())
-        if print_board:
-            print_positions(knots, visited_locations)
     return visited_locations
 
 

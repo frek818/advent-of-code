@@ -39,10 +39,10 @@ def parse_moves(input_data: str):
             line.split(" ") for line in input_data.splitlines() if line
         ]
     ]
-    
+
 
 def create_knots(amount):
-    return [Knot(0,0,idx) for idx in range(amount)]
+    return [Knot(0, 0, idx) for idx in range(amount)]
 
 
 def control_head(knot: Knot, direction):

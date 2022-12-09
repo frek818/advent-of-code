@@ -48,6 +48,22 @@ def control_head(knot: Knot, direction):
     return knot.position()
 
 
+def control_tail_(knot: Knot, following_position):
+    bx, by = knot.position()
+    ax, ay = following_position
+    if abs(ay - by) == 2:
+        if ay > by:
+            knot.move("U")
+        else:
+            knot.move("D")
+    if abs(ax - bx) == 2:
+        if ax > bx:
+            knot.move("R")
+        else:
+            knot.move("L")
+    return knot.position()
+
+
 def control_tail(knot: Knot, following_position):
     bx, by = knot.position()
     ax, ay = following_position

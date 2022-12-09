@@ -67,7 +67,7 @@ def control_b(thing: Thing, following_position):
                 thing.move("U")
             else:
                 thing.move("D")
-                
+
     # vertical procedure
     elif ay == by:
         if abs(ax - bx) == 2:
@@ -134,11 +134,6 @@ def print_positions(things: List[Thing]):
             thing = position_to_thing_map.get((x, y))
             print("." if thing is None else thing.id, end="")
         print()
-    print(f"head = {things[0].position()}")
-
-
-def visited_places(things: List[Thing]):
-    return [thing.position() for thing in things]
 
 
 def solution_2(input_data: str):

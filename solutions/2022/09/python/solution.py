@@ -39,6 +39,10 @@ def parse_moves(input_data: str):
             line.split(" ") for line in input_data.splitlines() if line
         ]
     ]
+    
+
+def create_knots(amount):
+    return [Knot(0,0,idx) for idx in range(amount)]
 
 
 def control_head(knot: Knot, direction):
@@ -103,7 +107,7 @@ def tail_visited_locations(
 
 def solution_1(input_data: str):
     "part 1"
-    knots = [Knot(0, 0, id) for id in range(2)]
+    knots = create_knots(2)
     moves = parse_moves(input_data)
     visited = tail_visited_locations(knots, moves)
     return len(set(visited))
@@ -111,7 +115,7 @@ def solution_1(input_data: str):
 
 def solution_2(input_data: str):
     "part 2"
-    knots = [Knot(0, 0, id) for id in range(10)]
+    knots = create_knots(10)
     moves = parse_moves(input_data)
     visited = tail_visited_locations(knots, moves)
     return len(set(visited))

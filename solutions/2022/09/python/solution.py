@@ -94,14 +94,14 @@ def update_positions(knots: List[Knot], head_move):
         control_tail(knots[tail_index], knots[tail_index - 1].position())
 
 
-def tail_visited_locations(
-    knots: List[Knot], moves: List[Tuple[str, int]], print_board=False
+def knot_visited_locations(
+    knots: List[Knot], moves: List[Tuple[str, int]], knot_idx=-1
 ):
     visited_locations = set()
     for direction, steps in moves:
         for _ in range(steps):
             update_positions(knots, direction)
-            visited_locations.add(knots[-1].position())
+            visited_locations.add(knots[knot_idx].position())
     return visited_locations
 
 
@@ -109,7 +109,7 @@ def solution_1(input_data: str):
     "part 1"
     knots = create_knots(2)
     moves = parse_moves(input_data)
-    visited = tail_visited_locations(knots, moves)
+    visited = knot_visited_locations(knots, moves)
     return len(set(visited))
 
 
@@ -117,7 +117,7 @@ def solution_2(input_data: str):
     "part 2"
     knots = create_knots(10)
     moves = parse_moves(input_data)
-    visited = tail_visited_locations(knots, moves)
+    visited = knot_visited_locations(knots, moves)
     return len(set(visited))
 
 

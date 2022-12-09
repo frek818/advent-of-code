@@ -32,9 +32,10 @@ class Knot:
         return (self._x, self._y)
 
 
-def parse_command(line: str):
-    direction, steps = line.split(" ")
-    return direction, int(steps)
+def parse_moves(input_data: str):
+    return [(direction, int(steps))
+            for direction, steps
+            in [line.split(' ') for line in input_data.splitlines() if line]]
 
 
 def control_a(knot: Knot, direction):
@@ -125,7 +126,7 @@ def tail_visited_locations(
 def solution_1(input_data: str):
     "part 1"
     knots = [Knot(0, 0, id) for id in range(2)]
-    moves = [parse_command(line) for line in input_data.splitlines() if line]
+    moves = parse_moves(input_data)
     visited = tail_visited_locations(knots, moves)
     return len(set(visited))
 
@@ -133,7 +134,7 @@ def solution_1(input_data: str):
 def solution_2(input_data: str):
     "part 2"
     knots = [Knot(0, 0, id) for id in range(10)]
-    moves = [parse_command(line) for line in input_data.splitlines() if line]
+    moves = parse_moves(input_data)
     visited = tail_visited_locations(knots, moves)
     return len(set(visited))
 

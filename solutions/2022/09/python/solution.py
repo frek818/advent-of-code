@@ -37,13 +37,13 @@ def parse_command(line: str):
     return direction, int(steps)
 
 
-def control_a(thing: Knot, direction):
-    thing.move(direction)
-    return thing.position()
+def control_a(knot: Knot, direction):
+    knot.move(direction)
+    return knot.position()
 
 
-def control_b(thing: Knot, following_position):
-    bx, by = thing.position()
+def control_b(knot: Knot, following_position):
+    bx, by = knot.position()
     ax, ay = following_position
 
     # diagonal procedure
@@ -52,38 +52,38 @@ def control_b(thing: Knot, following_position):
             return
 
         if ax > bx:
-            thing.move("R")
+            knot.move("R")
         else:
-            thing.move("L")
+            knot.move("L")
 
         if ay > by:
-            thing.move("U")
+            knot.move("U")
         else:
-            thing.move("D")
+            knot.move("D")
 
     # horizontal procedure
     elif ax == bx:
         if abs(ay - by) == 2:
             if ay > by:
-                thing.move("U")
+                knot.move("U")
             else:
-                thing.move("D")
+                knot.move("D")
 
     # vertical procedure
     elif ay == by:
         if abs(ax - bx) == 2:
             if ax > bx:
-                thing.move("R")
+                knot.move("R")
             else:
-                thing.move("L")
+                knot.move("L")
 
-    return thing.position()
+    return knot.position()
 
 
-def tick(things: List[Knot], first_move):
-    control_a(things[0], first_move)
-    for tail_index in range(1, len(things)):
-        control_b(things[tail_index], things[tail_index - 1].position())
+def tick(knots: List[Knot], first_move):
+    control_a(knots[0], first_move)
+    for tail_index in range(1, len(knots)):
+        control_b(knots[tail_index], knots[tail_index - 1].position())
 
 
 def get_grid_boundaries(positions):
@@ -98,9 +98,9 @@ def get_grid_boundaries(positions):
     return vertical_range, horizontal_range
 
 
-def print_positions(things: List[Knot], visited_locations: List[Knot]):
+def print_positions(knots: List[Knot], visited_locations: List[Knot]):
     vertical_range, horizontal_range = get_grid_boundaries(visited_locations)
-    position_to_thing_map = {thing.position(): thing for thing in things}
+    position_to_thing_map = {thing.position(): thing for thing in knots}
     for y in vertical_range:
         for x in horizontal_range:
             thing = position_to_thing_map.get((x, y))
@@ -109,30 +109,30 @@ def print_positions(things: List[Knot], visited_locations: List[Knot]):
     print()
 
 
-def tail_visited_locations(things, moves, print_board=False):
+def tail_visited_locations(knots, moves, print_board=False):
     visited_locations = []
     for direction, steps in moves:
         for _ in range(steps):
-            tick(things, direction)
-            visited_locations.append(things[-1].position())
+            tick(knots, direction)
+            visited_locations.append(knots[-1].position())
         if print_board:
-            print_positions(things, visited_locations)
+            print_positions(knots, visited_locations)
     return visited_locations
 
 
 def solution_1(input_data: str):
     "part 1"
-    things = [Knot(0, 0, id) for id in range(2)]
+    knots = [Knot(0, 0, id) for id in range(2)]
     moves = [parse_command(line) for line in input_data.splitlines() if line]
-    visited = tail_visited_locations(things, moves)
+    visited = tail_visited_locations(knots, moves)
     return len(set(visited))
 
 
 def solution_2(input_data: str):
     "part 2"
-    things = [Knot(0, 0, id) for id in range(10)]
+    knots = [Knot(0, 0, id) for id in range(10)]
     moves = [parse_command(line) for line in input_data.splitlines() if line]
-    visited = tail_visited_locations(things, moves)
+    visited = tail_visited_locations(knots, moves)
     return len(set(visited))
 
 

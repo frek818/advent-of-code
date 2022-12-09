@@ -110,7 +110,7 @@ def solution_1(input_data: str):
     knots = create_knots(2)
     moves = parse_moves(input_data)
     visited = knot_visited_locations(knots, moves)
-    return len(set(visited))
+    return len(visited)
 
 
 def solution_2(input_data: str):
@@ -118,7 +118,7 @@ def solution_2(input_data: str):
     knots = create_knots(10)
     moves = parse_moves(input_data)
     visited = knot_visited_locations(knots, moves)
-    return len(set(visited))
+    return len(visited)
 
 
 year, day = 2022, 9

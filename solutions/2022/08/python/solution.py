@@ -31,9 +31,10 @@ def filter_incrementing_indexes(items):
 def actual_index(indexes, length, direction):
     if direction in ("right", "bottom"):
         return [
-            compliment for current, compliment in zip(
-                range(length), range(
-                    length - 1, -1, -1)) if current in indexes]
+            compliment
+            for current, compliment in zip(range(length), range(length - 1, -1, -1))
+            if current in indexes
+        ]
     return indexes
 
 
@@ -49,16 +50,17 @@ def items_visible_from_direction(trees, direction):
     for outer in range(len(outer_dimension)):
         all_in_row = actual_direction(
             [
-                tree_height(
-                    inner,
-                    outer,
-                    direction,
-                    trees) for inner in range(
-                    len(inner_dimension))],
-            direction)
+                tree_height(inner, outer, direction, trees)
+                for inner in range(len(inner_dimension))
+            ],
+            direction,
+        )
         tallest_index = get_tallest_index(all_in_row)
-        incrementing_indexes = actual_index(filter_incrementing_indexes(
-            all_in_row[:tallest_index + 1]), len(inner_dimension), direction)
+        incrementing_indexes = actual_index(
+            filter_incrementing_indexes(all_in_row[: tallest_index + 1]),
+            len(inner_dimension),
+            direction,
+        )
         for idx in incrementing_indexes:
             visible.append(actual_coords(idx, outer, direction))
     return visible
@@ -108,8 +110,7 @@ def viewing_distance(x, y, trees, direction):
         viewable_trees += 1
         if trees[ny][nx] >= height:
             break
-        if nx == 0 or ny == 0 or nx + \
-                1 == len(trees[0]) or ny + 1 == len(trees):
+        if nx == 0 or ny == 0 or nx + 1 == len(trees[0]) or ny + 1 == len(trees):
             break
     return viewable_trees
 
@@ -139,7 +140,7 @@ def solution_2(input_data: str):
 year, day = 2022, 8
 assert year and day, "year and day must be set"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     puzzle = Puzzle(year=year, day=day)
     print(solution_1(puzzle.input_data))
     print(solution_2(puzzle.input_data))

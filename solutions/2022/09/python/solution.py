@@ -1,7 +1,7 @@
 """
 --- Day 9: Rope Bridge ---
 """
-from typing import List
+from typing import List, Tuple
 from aocd.models import Puzzle
 
 
@@ -80,7 +80,7 @@ def control_b(knot: Knot, following_position):
     return knot.position()
 
 
-def tick(knots: List[Knot], first_move):
+def update_positions(knots: List[Knot], first_move):
     control_a(knots[0], first_move)
     for tail_index in range(1, len(knots)):
         control_b(knots[tail_index], knots[tail_index - 1].position())
@@ -109,12 +109,14 @@ def print_positions(knots: List[Knot], visited_locations: List[Knot]):
     print()
 
 
-def tail_visited_locations(knots, moves, print_board=False):
-    visited_locations = []
+def tail_visited_locations(
+    knots: List[Knot], moves: List[Tuple[str, int]], print_board=False
+):
+    visited_locations = set()
     for direction, steps in moves:
         for _ in range(steps):
-            tick(knots, direction)
-            visited_locations.append(knots[-1].position())
+            update_positions(knots, direction)
+            visited_locations.add(knots[-1].position())
         if print_board:
             print_positions(knots, visited_locations)
     return visited_locations
@@ -139,7 +141,7 @@ def solution_2(input_data: str):
 year, day = 2022, 9
 assert year and day, "year and day must be set"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     puzzle = Puzzle(year=year, day=day)
     print(solution_1(puzzle.input_data))
     print(solution_2(puzzle.input_data))

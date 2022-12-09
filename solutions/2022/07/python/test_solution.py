@@ -1,7 +1,14 @@
-'''Unit Tests'''
+"""Unit Tests"""
 import pytest
 
-from .solution import solution_1, solution_2, get_full_path_string, Directory, File, get_full_path_nodes
+from .solution import (
+    solution_1,
+    solution_2,
+    get_full_path_string,
+    Directory,
+    File,
+    get_full_path_nodes,
+)
 
 
 @pytest.fixture
@@ -30,7 +37,9 @@ $ ls
 8033020 d.log
 5626152 d.ext
 7214296 k
-""".lstrip("\n")
+""".lstrip(
+        "\n"
+    )
 
 
 def test_get_full_path_nodes():

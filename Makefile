@@ -1,5 +1,6 @@
 DAY =
 YEAR =
+PYTEST_ARGS =
 SOLUTION_PATH:=solutions/$(YEAR)/$(DAY)
 GOLANG_PATH:=$(SOLUTION_PATH)/golang
 PYTHON_PATH:=$(SOLUTION_PATH)/python
@@ -21,7 +22,7 @@ endif
 
 .PHONY: pytest
 pytest: check-env | $(PYTHON_PATH)
-	cd $(PYTHON_PATH) && python -mpytest
+	cd $(PYTHON_PATH) && python -mpytest $(PYTEST_ARGS)
 
 .PHONY: pyanswer
 pyanswer: check-env pytest | $(PYTHON_PATH)

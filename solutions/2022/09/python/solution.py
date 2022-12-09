@@ -13,8 +13,6 @@ class Knot:
 
     @property
     def id(self) -> str:
-        if self._id == 0:
-            return "H"
         return str(self._id)
 
     def move(self, direction):

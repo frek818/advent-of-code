@@ -97,22 +97,6 @@ def tick_many(things: List[Thing], first_move):
     control_b(things[9], things[8].position())
 
 
-def solution_1(input_data: str):
-    "part 1"
-    thing_a = Thing(0, 0, "1")
-    thing_b = Thing(0, 0, "2")
-    unique_locations = []
-
-    for line in input_data.split("\n"):
-        if not line:
-            continue
-        direction, steps = parse_command(*line.split(" "))
-        for _ in range(steps):
-            tick(thing_a, thing_b, direction)
-            unique_locations.append(thing_b.position())
-    return len(set(unique_locations))
-
-
 def get_grid_boundaries(positions):
     xs = [a[0] for a in positions]
     ys = [a[1] for a in positions]
@@ -134,6 +118,22 @@ def print_positions(things: List[Thing]):
             thing = position_to_thing_map.get((x, y))
             print("." if thing is None else thing.id, end="")
         print()
+
+
+def solution_1(input_data: str):
+    "part 1"
+    thing_a = Thing(0, 0, "1")
+    thing_b = Thing(0, 0, "2")
+    unique_locations = []
+
+    for line in input_data.split("\n"):
+        if not line:
+            continue
+        direction, steps = parse_command(*line.split(" "))
+        for _ in range(steps):
+            tick(thing_a, thing_b, direction)
+            unique_locations.append(thing_b.position())
+    return len(set(unique_locations))
 
 
 def solution_2(input_data: str):

@@ -1,7 +1,7 @@
 """Unit Tests"""
 import pytest
 
-from .solution import solution_1, solution_2, control_tail, Knot
+from .solution import solution_1, solution_2, Knot
 
 
 @pytest.fixture
@@ -18,34 +18,6 @@ R 2
 """.lstrip(
         "\n"
     )
-
-
-def test_control_b():
-    thing_a = Knot(0, 0, "1")
-    thing_b = Knot(0, 0, "2")
-    thing_a_moves = [
-        ("R", 4),
-        ("U", 4),
-    ]
-    expected_b_positions = [
-        (0, 0),
-        (0, 0),
-        (1, 0),
-        (2, 0),
-        (3, 0),  # end ("R", 4)
-        (3, 0),
-        (4, 1),
-        (4, 2),
-        (4, 3),  # end ("U", 4)
-    ]
-    b_positions = [thing_b.position()]
-    for move, steps in thing_a_moves:
-        for _ in range(steps):
-            thing_a.move(move)
-            control_tail(thing_b, thing_a.position())
-            b_positions.append(thing_b.position())
-
-    assert expected_b_positions == b_positions
 
 
 def test_solution_1(input_data):

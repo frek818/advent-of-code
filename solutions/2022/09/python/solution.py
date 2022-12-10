@@ -56,10 +56,15 @@ def move_b(knot_h: Knot, knot_t: Knot) -> Knot:
 
 
 def tail_visited_count(knots: List[Knot], moves: Tuple[str, int]) -> int:
-    return len(set([reduce(move_b, knots[1:], move_a(knots[0], direction)).position()
-                    for direction, steps in moves
-                    for _ in range(steps)
-                    ]))
+    return len(
+        set(
+            [
+                reduce(move_b, knots[1:], move_a(knots[0], direction)).position()
+                for direction, steps in moves
+                for _ in range(steps)
+            ]
+        )
+    )
 
 
 def solution_1(input_data: str):

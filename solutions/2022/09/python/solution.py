@@ -23,12 +23,12 @@ class Knot:
 
 
 def parse_moves(input_data: str):
-    return [
+    return (
         (direction, int(steps))
         for direction, steps in [
             line.split(" ") for line in input_data.splitlines() if line
         ]
-    ]
+    )
 
 
 def move_head(knot: Knot, move: str) -> Knot:

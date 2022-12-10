@@ -35,12 +35,12 @@ def parse_moves(input_data: str):
     ]
 
 
-def move_a(knot: Knot, move: str) -> Knot:
+def move_head(knot: Knot, move: str) -> Knot:
     knot.move(move)
     return knot
 
 
-def move_b(knot_h: Knot, knot_t: Knot) -> Knot:
+def move_tail(knot_h: Knot, knot_t: Knot) -> Knot:
     bx, by = knot_t.position()
     ax, ay = knot_h.position()
     if not (abs(ay - by) == 2 or abs(ax - bx) == 2):
@@ -59,7 +59,7 @@ def tail_visited_count(knots: List[Knot], moves: Tuple[str, int]) -> int:
     return len(
         set(
             [
-                reduce(move_b, knots[1:], move_a(knots[0], direction)).position()
+                reduce(move_tail, knots[1:], move_head(knots[0], direction)).position()
                 for direction, steps in moves
                 for _ in range(steps)
             ]

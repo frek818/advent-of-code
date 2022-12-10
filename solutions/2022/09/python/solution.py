@@ -58,11 +58,9 @@ def move_tail(knot_h: Knot, knot_t: Knot) -> Knot:
 def tail_visited_count(knots: List[Knot], moves: Tuple[str, int]) -> int:
     return len(
         set(
-            [
-                reduce(move_tail, knots[1:], move_head(knots[0], direction)).position()
-                for direction, steps in moves
-                for _ in range(steps)
-            ]
+            reduce(move_tail, knots[1:], move_head(knots[0], direction)).position()
+            for direction, steps in moves
+            for _ in range(steps)
         )
     )
 

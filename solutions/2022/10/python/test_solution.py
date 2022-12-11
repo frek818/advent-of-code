@@ -1,8 +1,12 @@
-'''Unit Tests'''
+"""Unit Tests"""
 import pytest
 
 from .solution import solution_1, solution_2
 from .computer import cycle_to_coords, CRT, Sprite
+
+
+def f(sheet: str):
+    return "".join(sheet.splitlines())
 
 
 @pytest.fixture
@@ -154,15 +158,52 @@ addx -11
 noop
 noop
 noop
-""".lstrip("\n")
+""".lstrip(
+        "\n"
+    )
 
 
-def test_solution_1(input_data):
+def ttest_solution_1(input_data):
     assert 13140 == solution_1(input_data)
-    
-def test_crt():
-    crt = CRT(5,5,Sprite(3))
-    crt.position_sprite(0)
+
+
+def ttest_sprite():
+    sprite = Sprite(3, 1)
+    assert sprite.is_covering_position(0)
+    assert sprite.is_covering_position(1)
+    assert sprite.is_covering_position(2)
+    assert not sprite.is_covering_position(3)
+    assert not sprite.is_covering_position(4)
+
+
+def ttest_crt():
+    sprite = Sprite(3, 1)
+    crt = CRT(40, 6, sprite)
+    crt.set_position_sprite(1)
+
+    assert sprite.is_covering_position(0)
+    assert sprite.is_covering_position(1)
+    assert sprite.is_covering_position(2)
+    assert not sprite.is_covering_position(3)
+    assert not sprite.is_covering_position(4)
+
+    crt.draw(1)
+    assert crt.paint()[0] == "#"
+    crt.draw(2)
+    assert crt.paint()[1] == "#"
+    crt.draw(3)
+    assert crt.paint()[2] == "."
+
+    crt.set_position_sprite(16)
+
+    crt.draw(4)
+    assert crt.paint()[3] == "."
+
+    crt.set_position_sprite(5)
+
+    crt.draw(5)
+    assert crt.paint()[4] == "#"
+
 
 def test_solution_2(input_data):
     expected = """
@@ -171,13 +212,19 @@ def test_solution_2(input_data):
 ####....####....####....####....####....
 #####.....#####.....#####.....#####.....
 ######......######......######......####
-#######.......#######.......#######.....""".lstrip("\n")
+#######.......#######.......#######.....""".lstrip(
+        "\n"
+    )
     assert expected == solution_2(input_data)
 
-@pytest.mark.parametrize(("cycle", "width", "expected"), [
-    (1, 40, (0,0)),
-    (40, 40, (39,0)),
-    (41, 40, (0,1)),
-])
+
+@pytest.mark.parametrize(
+    ("cycle", "width", "expected"),
+    [
+        (1, 40, (0, 0)),
+        (40, 40, (39, 0)),
+        (41, 40, (0, 1)),
+    ],
+)
 def test_cycle_to_coords(cycle, width, expected):
     assert expected == cycle_to_coords(cycle=cycle, width=width)

@@ -8,7 +8,9 @@ class Sprite:
     position: int
 
     def is_covering_position(self, position: int) -> bool:
-        return position in range(self.position, self.position + self.width)
+        r = range(self.position-1, self.position-1 + self.width)
+        print([v for v in r])
+        return position in r
 
 
 class CRT:
@@ -16,13 +18,13 @@ class CRT:
         self._width = width
         self._height = height
         self._sprite = sprite
-        self._bits = [[None for _ in range(width)] for _ in range(height)]
+        self._bits = [["U" for _ in range(width)] for _ in range(height)]
 
-    def position_sprite(self, position: int):
+    def set_position_sprite(self, position: int):
         self._sprite.position = position
 
     def paint(self):
-        return "\n".join(["".join([str(self._bits[y - 1][x - 1])
+        return "\n".join(["".join([str(self._bits[y][x])
                          for x in range(self._width)]) for y in range(self._height)])
 
     def draw(self, cycle_number: int):
@@ -31,6 +33,7 @@ class CRT:
             self._bits[y_position][x_position] = "#"
         else:
             self._bits[y_position][x_position] = "."
+        return self._bits[y_position][x_position] 
 
 
 def cycle_to_coords(cycle, width):
@@ -147,5 +150,8 @@ class CPU():
         if inst.cycles_left != 0:
             return
         inst.execute()
+        print(f"End of cycle  {self.cycle_number}: ",
+              f"finish executing {inst.func} {inst.parameters} (Register X is now {self._registers.get('X')})"
+        )
         self.collect_sample("after")
         self._instruction_queue = self._instruction_queue[1:]

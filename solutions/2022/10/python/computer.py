@@ -84,6 +84,19 @@ class CPU:
         self._stages_to_sample = set()
         self._samples = []
 
+    def tick(self):
+        self.increment_cycle_count()
+        self.collect_sample("during")
+        if len(self._instruction_queue) == 0:
+            return
+        inst = self._instruction_queue[0]
+        inst.decrement_cycles_left()
+        if inst.cycles_left != 0:
+            return
+        inst.execute()
+        self.collect_sample("after")
+        self._instruction_queue = self._instruction_queue[1:]
+
     def set_cycles_to_sample(self, cycles_to_sample):
         self._cycles_to_sample = cycles_to_sample
 
@@ -132,23 +145,11 @@ class CPU:
             stage in self._stages_to_sample
             and self.cycle_number in self._cycles_to_sample
         ):
-            self._samples.append((stage, self.cycle_number, self._registers.get("X")))
+            self._samples.append(
+                (stage, self.cycle_number, self._registers.get("X")))
 
         if "during" == stage:
             self._during = self._registers.get("X")
 
     def done(self):
         return len(self._instruction_queue) == 0
-
-    def tick(self):
-        self.increment_cycle_count()
-        self.collect_sample("during")
-        if len(self._instruction_queue) == 0:
-            return
-        inst = self._instruction_queue[0]
-        inst.decrement_cycles_left()
-        if inst.cycles_left != 0:
-            return
-        inst.execute()
-        self.collect_sample("after")
-        self._instruction_queue = self._instruction_queue[1:]

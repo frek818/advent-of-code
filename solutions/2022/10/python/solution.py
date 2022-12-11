@@ -43,7 +43,7 @@ def solution_2(input_data: str):
     while True:
         cpu.tick()
         crt.set_position_sprite(cpu.during)
-        drew = crt.draw(cpu.cycle_number)
+        crt.draw(cpu.cycle_number)
         if cpu.done():
             break
     return crt.paint()

@@ -22,10 +22,9 @@ def parse_instructions(input_data: str) -> List[Tuple[str, List[int]]]:
 
 def solution_1(input_data: str):
     "part 1"
-    cycles_to_sample = [20, 60, 100, 140, 180, 220]
     cpu = CPU()
     cpu.queue_instructions(parse_instructions(input_data))
-    cpu.set_cycles_to_sample(cycles_to_sample)
+    cpu.set_cycles_to_sample([20, 60, 100, 140, 180, 220])
     cpu.set_stages_to_sample(["during"])
     while True:
         cpu.tick()

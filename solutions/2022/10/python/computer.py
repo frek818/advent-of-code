@@ -145,8 +145,7 @@ class CPU:
             stage in self._stages_to_sample
             and self.cycle_number in self._cycles_to_sample
         ):
-            self._samples.append(
-                (stage, self.cycle_number, self._registers.get("X")))
+            self._samples.append((stage, self.cycle_number, self._registers.get("X")))
 
         if "during" == stage:
             self._during = self._registers.get("X")

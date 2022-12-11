@@ -28,6 +28,10 @@ pytest: check-env | $(PYTHON_PATH)
 pyanswer: check-env pytest | $(PYTHON_PATH)
 	cd $(PYTHON_PATH) && python solution.py
 
+.PHONY: timeit
+timeit: check-env
+	bash -c 'TIMES=500 time python $(PYTHON_PATH)/solution.py'
+
 $(PYTHON_PATH): | $(SOLUTION_PATH)
 	cp -a template/python $(SOLUTION_PATH)/
 
@@ -38,4 +42,5 @@ $(SOLUTION_PATH): | check-env
 	git checkout -b feature/$(YEAR)/$(DAY)
 	mkdir -p $(SOLUTION_PATH)
 	touch $(SOLUTION_PATH)/problem.md
+
 

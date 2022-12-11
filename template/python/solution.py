@@ -1,6 +1,8 @@
 """
 # REPLACE WITH TITLE
 """
+import os
+
 from aocd.models import Puzzle
 
 
@@ -19,5 +21,6 @@ assert year and day, "year and day must be set"
 
 if __name__ == '__main__':
     puzzle = Puzzle(year=year, day=day)
-    print(solution_1(puzzle.input_data))
-    print(solution_2(puzzle.input_data))
+    for _ in range(int(os.getenv("TIMES","1"))):
+        print(solution_1(puzzle.input_data))
+        print(solution_2(puzzle.input_data))

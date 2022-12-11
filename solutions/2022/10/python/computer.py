@@ -8,9 +8,7 @@ class Sprite:
     position: int
 
     def is_covering_position(self, position: int) -> bool:
-        r = range(self.position-1, self.position-1 + self.width)
-        print([v for v in r])
-        return position in r
+        return position in range(self.position-1, self.position-1 + self.width)
 
 
 class CRT:

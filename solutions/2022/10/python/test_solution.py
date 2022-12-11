@@ -167,7 +167,7 @@ def ttest_solution_1(input_data):
     assert 13140 == solution_1(input_data)
 
 
-def ttest_sprite():
+def test_sprite():
     sprite = Sprite(3, 1)
     assert sprite.is_covering_position(0)
     assert sprite.is_covering_position(1)
@@ -176,7 +176,7 @@ def ttest_sprite():
     assert not sprite.is_covering_position(4)
 
 
-def ttest_crt():
+def test_crt():
     sprite = Sprite(3, 1)
     crt = CRT(40, 6, sprite)
     crt.set_position_sprite(1)
@@ -192,7 +192,7 @@ def ttest_crt():
     crt.draw(2)
     assert crt.paint()[1] == "#"
     crt.draw(3)
-    assert crt.paint()[2] == "."
+    assert crt.paint()[2] == "#"
 
     crt.set_position_sprite(16)
 

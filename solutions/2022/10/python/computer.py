@@ -148,8 +148,5 @@ class CPU():
         if inst.cycles_left != 0:
             return
         inst.execute()
-        print(f"End of cycle  {self.cycle_number}: ",
-              f"finish executing {inst.func} {inst.parameters} (Register X is now {self._registers.get('X')})"
-        )
         self.collect_sample("after")
         self._instruction_queue = self._instruction_queue[1:]

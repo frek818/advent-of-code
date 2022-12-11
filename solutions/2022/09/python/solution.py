@@ -13,10 +13,14 @@ class Knot:
 
     def move(self, direction):
         match direction:
-            case "L": self._x -= 1
-            case "U": self._y += 1
-            case "R": self._x += 1
-            case "D": self._y -= 1
+            case "L":
+                self._x -= 1
+            case "U":
+                self._y += 1
+            case "R":
+                self._x += 1
+            case "D":
+                self._y -= 1
 
     def position(self):
         return (self._x, self._y)
@@ -63,14 +67,12 @@ def tail_visited_count(knots: List[Knot], moves: Tuple[str, int]) -> int:
 
 def solution_1(input_data: str):
     "part 1"
-    return tail_visited_count([Knot(0, 0)
-                              for _ in range(2)], parse_moves(input_data))
+    return tail_visited_count([Knot(0, 0) for _ in range(2)], parse_moves(input_data))
 
 
 def solution_2(input_data: str):
     "part 2"
-    return tail_visited_count([Knot(0, 0)
-                              for _ in range(10)], parse_moves(input_data))
+    return tail_visited_count([Knot(0, 0) for _ in range(10)], parse_moves(input_data))
 
 
 year, day = 2022, 9

@@ -8,7 +8,7 @@ class Sprite:
     position: int
 
     def is_covering_position(self, position: int) -> bool:
-        return position in range(self.position-1, self.position-1 + self.width)
+        return position in range(self.position - 1, self.position - 1 + self.width)
 
 
 class CRT:
@@ -22,8 +22,12 @@ class CRT:
         self._sprite.position = position
 
     def paint(self):
-        return "\n".join(["".join([str(self._bits[y][x])
-                         for x in range(self._width)]) for y in range(self._height)])
+        return "\n".join(
+            [
+                "".join([str(self._bits[y][x]) for x in range(self._width)])
+                for y in range(self._height)
+            ]
+        )
 
     def draw(self, cycle_number: int):
         x_position, y_position = cycle_to_coords(cycle_number, self._width)
@@ -31,7 +35,7 @@ class CRT:
             self._bits[y_position][x_position] = "#"
         else:
             self._bits[y_position][x_position] = "."
-        return self._bits[y_position][x_position] 
+        return self._bits[y_position][x_position]
 
 
 def cycle_to_coords(cycle, width):
@@ -57,14 +61,11 @@ class Instruction:
         self.cycles_left -= 1
 
 
-class CPU():
-    def __init__(
-            self,
-            registers: Dict[str, any] = None,
-            ticks_per_cycle=1):
+class CPU:
+    def __init__(self, registers: Dict[str, any] = None, ticks_per_cycle=1):
         self._cycle_number = 0
-        self._registers = registers if registers else {'X': 1}
-        self._during = self._registers.get('X')
+        self._registers = registers if registers else {"X": 1}
+        self._during = self._registers.get("X")
         self._ticks_per_cycle = ticks_per_cycle
         self._instructions = {
             "addx": {
@@ -76,7 +77,7 @@ class CPU():
                 "func": self.noop,
                 "cycles": 1,
                 "params": 0,
-            }
+            },
         }
         self._instruction_queue: List[Instruction] = []
         self._cycles_to_sample = set()
@@ -90,8 +91,7 @@ class CPU():
         self._stages_to_sample = stages_to_samples
 
     def power_samples(self, phase):
-        return [sample[1] * sample[2]
-                for sample in self._samples if sample[0] == phase]
+        return [sample[1] * sample[2] for sample in self._samples if sample[0] == phase]
 
     @property
     def signal_strength(self):
@@ -128,12 +128,14 @@ class CPU():
             self.queue_instruction(instruction, params)
 
     def collect_sample(self, stage):
-        if stage in self._stages_to_sample and self.cycle_number in self._cycles_to_sample:
-            self._samples.append(
-                (stage, self.cycle_number, self._registers.get('X')))
+        if (
+            stage in self._stages_to_sample
+            and self.cycle_number in self._cycles_to_sample
+        ):
+            self._samples.append((stage, self.cycle_number, self._registers.get("X")))
 
         if "during" == stage:
-            self._during = self._registers.get('X')
+            self._during = self._registers.get("X")
 
     def done(self):
         return len(self._instruction_queue) == 0

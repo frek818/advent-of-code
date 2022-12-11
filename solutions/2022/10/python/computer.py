@@ -16,7 +16,7 @@ class CRT:
         self._width = width
         self._height = height
         self._sprite = sprite
-        self._bits = [["U" for _ in range(width)] for _ in range(height)]
+        self._bits = [[" " for _ in range(width)] for _ in range(height)]
 
     def set_position_sprite(self, position: int):
         self._sprite.position = position

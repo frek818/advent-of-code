@@ -1,4 +1,5 @@
 """
+--- Day 12: Hill Climbing Algorithm ---
 """
 import os
 
@@ -15,7 +16,7 @@ def solution_2(input_data: str):
     return 0
 
 
-year, day = None, None
+year, day = 2022, 12
 assert year and day, "year and day must be set"
 
 if __name__ == '__main__':

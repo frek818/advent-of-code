@@ -2,6 +2,7 @@
 --- Day 11: Monkey in the Middle ---
 """
 import os
+import math
 from collections import defaultdict
 from dataclasses import dataclass
 import operator
@@ -21,6 +22,7 @@ def make_operation(base_op, other=None) -> Callable[[int], int]:
         def inner(old):
             return base_op(old, other)
 
+    inner.__name__ = base_op.__name__
     return inner
 
 
@@ -36,10 +38,10 @@ class Monkey:
     id: int
     items: List[int]
     operation: Callable[[int], int]
-    test: Callable[[int, int], bool]
+    divisible_factor: int
     next_monkey_true: int
     next_monkey_false: int
-    inspect_count: int
+    inspected_count: int
 
 
 def parse_monkey(lines: List[str]) -> Monkey:
@@ -50,7 +52,13 @@ def parse_monkey(lines: List[str]) -> Monkey:
     next_monkey_true = int(lines[4].split(" monkey ")[1])
     next_monkey_false = int(lines[5].split(" monkey ")[1])
     return Monkey(
-        id, items, operation, test, next_monkey_true, next_monkey_false, inspect_count=0
+        id,
+        items,
+        operation,
+        test,
+        next_monkey_true,
+        next_monkey_false,
+        inspected_count=0,
     )
 
 
@@ -62,48 +70,72 @@ def relief_adjuster(worry) -> int:
     return worry // 3
 
 
-def process_monkey(monkey: Monkey) -> Dict[int, List[int]]:
+def relief_adjuster_lcm(lcm) -> Callable[[int], int]:
+    def relief_adjuster_(worry):
+        return worry % lcm
+
+    return relief_adjuster_
+
+
+def is_divisible_fn(worry, test):
+    return worry % test == 0
+
+
+def process_monkey(monkey: Monkey, relief_adjuster) -> Dict[int, List[int]]:
     "return a dictionary of monkey_id -> outgoing_items"
-    item_allocation = defaultdict(list)
+    if not monkey.items:
+        return {}
+
+    destination_monkey = defaultdict(list)
     worry_levels = [relief_adjuster(monkey.operation(item)) for item in monkey.items]
+
     for new_worry in worry_levels:
-        monkey.inspect_count += 1
-        is_divisible = (new_worry % monkey.test) == 0
-        destination = (
-            monkey.next_monkey_true if is_divisible else monkey.next_monkey_false
-        )
-        item_allocation[destination].append(new_worry)
-    monkey.items = []
-    return item_allocation
+        monkey.inspected_count += 1
+        is_divisible = is_divisible_fn(new_worry, monkey.divisible_factor)
+        destination_monkey[is_divisible].append(new_worry)
+    return destination_monkey
 
 
-def process_round(monkeys: List[Monkey]):
+def process_round(monkeys: List[Monkey], worry_adjuster: Callable[[int], int]):
     for monkey in monkeys:
-        for monkey_id, items in process_monkey(monkey).items():
-            monkeys[monkey_id].items.extend(items)
+        for true_or_false, items_ in process_monkey(monkey, worry_adjuster).items():
+            destination_monkey = monkeys[
+                monkey.next_monkey_true if true_or_false else monkey.next_monkey_false
+            ]
+            destination_monkey.items.extend(items_)
+            monkey.items = []
+
+
+def product_two_most_busy(
+    monkeys: List[Monkey], rounds: int, worry_adjuster: Callable[[int], int]
+):
+    for _ in range(rounds):
+        process_round(monkeys, worry_adjuster)
+    top_two_busy = [
+        monkey.inspected_count
+        for monkey in sorted(monkeys[:], key=lambda x: x.inspected_count)[-2:]
+    ]
+    return operator.mul(*top_two_busy)
 
 
 def solution_1(input_data: str):
     "part 1"
     monkeys = parse_monkeys(input_data)
-    for _ in range(20):
-        process_round(monkeys)
-    top_two_busy = [
-        m.inspect_count for m in sorted(monkeys[:], key=lambda x: x.inspect_count)[-2:]
-    ]
-    return operator.mul(*top_two_busy)
+    return product_two_most_busy(monkeys, 20, relief_adjuster)
 
 
 def solution_2(input_data: str):
     "part 2"
-    return 0
+    monkeys = parse_monkeys(input_data)
+    lcm_test_factor = math.lcm(*[monkey.divisible_factor for monkey in monkeys])
+    return product_two_most_busy(monkeys, 10000, relief_adjuster_lcm(lcm_test_factor))
 
 
 year, day = 2022, 11
 assert year and day, "year and day must be set"
 
 if __name__ == "__main__":
-    puzzle = Puzzle(year=year, day=day)
+    input_data = Puzzle(year=year, day=day).input_data
     for _ in range(int(os.getenv("TIMES", "1"))):
-        print(solution_1(puzzle.input_data))
-        print(solution_2(puzzle.input_data))
+        print(solution_1(input_data))
+        print(solution_2(input_data))

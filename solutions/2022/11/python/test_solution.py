@@ -43,8 +43,8 @@ def test_solution_1(input_data):
     assert 10605 == solution_1(input_data)
 
 
-def ttest_solution_2(input_data):
-    assert 1 == solution_2(input_data)
+def test_solution_2(input_data):
+    assert 2713310158 == solution_2(input_data)
 
 
 @pytest.mark.parametrize(
